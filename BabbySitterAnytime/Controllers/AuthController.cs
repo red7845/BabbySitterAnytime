@@ -1,6 +1,7 @@
 ﻿using BabbySitterAnytime.DataBaseModels;
 using BabbySitterAnytime.DataViewModels.AuthViewModels;
 using BabbySitterAnytime.Services.Token;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,7 +33,7 @@ namespace BabbySitterAnytime.Controllers
                 var user = await _userManager.FindByNameAsync(model.UserName);
                 var token = _tokenService.GenerateToken(user);
 
-                return Ok(new { token });
+                return Ok(new { token, UserId = user.Id });
             }
             return BadRequest();
             
@@ -41,6 +42,7 @@ namespace BabbySitterAnytime.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
+            // Assuming User entity has an Id property that is populated upon creation.
             var user = new User { UserName = model.UserName, Role = model.Role };
             var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -48,13 +50,21 @@ namespace BabbySitterAnytime.Controllers
             {
                 await _userManager.AddToRoleAsync(user, model.Role.ToString());
 
-                var userId = "user_id"; // Generate or retrieve the user ID
-                var token = _tokenService.GenerateTokenForRegisteredUser(userId, model.UserName, model.Role.ToString());
+                // Use the Id of the created user for the token generation.
+                var token = _tokenService.GenerateTokenForRegisteredUser(user.Id, user.UserName, user.Role.ToString());
 
-                return Ok(new { token });
-            } 
+                // Return the token and the user's Id in the response.
+                return Ok(new { token, UserId = user.Id });
+            }
             return BadRequest();
+        }
 
+        [Authorize(Roles = "Customer,BabySitter")]
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Ok(new { message = "You've been signed out successfully." });
         }
     }
 }

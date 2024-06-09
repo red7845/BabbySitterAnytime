@@ -1,4 +1,5 @@
 ﻿using BabbySitterAnytime.DataBaseModels;
+using BabbySitterAnytime.DataViewModels.BabySitterViewModels;
 using BabbySitterAnytime.DataViewModels.CustomerViewModels;
 using BabbySitterAnytime.Services.ClientRepo;
 using Microsoft.AspNetCore.Authorization;
@@ -47,7 +48,8 @@ namespace BabbySitterAnytime.Controllers
                 LastName = customer.LastName,
                 Email = customer.Email,
                 PhoneNumber = customer.PhoneNumber,
-                Address = customer.Address
+                Address = customer.Address, 
+                UserId = customer.UserId
             };
 
             await _clientRepository.CreateProfile(newCustomer);
@@ -81,6 +83,28 @@ namespace BabbySitterAnytime.Controllers
 
             await _clientRepository.EditProfile(existingCustomer);
             return Ok();
+        }
+
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<CustomerDataViewModel>> GetCustomerByUserId(string userId)
+        {
+            var customer = await _clientRepository.GetCustomerByUserId(userId);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            var customerViewModel = new CustomerDataViewModel
+            {
+                FirstName = customer.FirstName,
+                LastName = customer.LastName,
+                PhoneNumber = customer.PhoneNumber,
+                Email = customer.Email,
+                Address = customer.Address,
+                Id = customer.Id
+            };
+
+            return customerViewModel;
         }
     }
 }

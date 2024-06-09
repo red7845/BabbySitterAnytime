@@ -1,0 +1,19 @@
+﻿html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+#root, .App { /* Assuming your root div has an id of 'root' or class 'App' */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.content {
+    flex: 1; /* This ensures that the content section expands to fill available space */
+    overflow-y: auto; /* Adds scroll to the content area if content exceeds the viewport height */
+}
+

@@ -1,4 +1,5 @@
 ﻿using BabbySitterAnytime.DataBaseModels;
+using BabbySitterAnytime.DataViewModels;
 
 namespace BabbySitterAnytime.Services.BabysitterRepo
 {
@@ -7,6 +8,10 @@ namespace BabbySitterAnytime.Services.BabysitterRepo
         Task CreateProfile(Babysitter babysitter);
         Task EditProfile(Babysitter babysitter);
         Task<Babysitter> ProfileDetails(Guid id);
-        Task AddRatingForBabySitter(Rating rating);
+        Task<Babysitter> GetBabysitterByUserId(string userId);
+        Task AddRatingForBabySitter(RatingViewModel rating);
+        Task<List<RatingViewModel>> GetRatingsForBabysitter(Guid babysitterId);
+        Task<List<Babysitter>> GetBabysitters();
+        Task<List<Babysitter>> GetBabysittersBySupportingArea(Guid areaId);
     }
 }

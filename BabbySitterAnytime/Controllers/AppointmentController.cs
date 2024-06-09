@@ -9,7 +9,7 @@ namespace BabbySitterAnytime.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    [Authorize(Roles = "Customer, Babysitter")]
+    [Authorize(Roles = "Customer,BabySitter")]
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentRepository _appointmentRepository;
@@ -18,10 +18,10 @@ namespace BabbySitterAnytime.Controllers
             _appointmentRepository = appointmentRepository;
         }
 
-        [HttpGet("{babysitterId}/{clientId}")]
-        public async Task<ActionResult<AppointDetailsDataViewModel>> GetAppointmentDetails(Guid babysitterId, Guid clientId)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<AppointDetailsDataViewModel>> GetAppointmentDetails(Guid id)
         {
-            var appointment = await _appointmentRepository.AppointmentDetails(babysitterId, clientId);
+            var appointment = await _appointmentRepository.AppointmentDetails(id);
             if (appointment == null)
             {
                 return NotFound();
@@ -47,7 +47,8 @@ namespace BabbySitterAnytime.Controllers
                 BabySitterId = appointment.BabysitterId, 
                 StartingTime = appointment.StartingTime,
                 EndingTime = appointment.EndingTime,
-                Area = appointment.Area
+                Area = appointment.Area, 
+                AppointmentStatus = appointment.Status
             };
             await _appointmentRepository.CreateAppointment(newAppointment);
 
@@ -57,16 +58,16 @@ namespace BabbySitterAnytime.Controllers
                 BabysitterId = newAppointment.BabySitterId,
                 StartingTime = newAppointment.StartingTime, 
                 EndingTime = newAppointment.EndingTime,
-                AppointmentStatus = AppointmentStatus.ResponsePending,
+                AppointmentStatus = newAppointment.AppointmentStatus,
                 Area = newAppointment.Area
             };
-            return CreatedAtAction(nameof(GetAppointmentDetails), new { babysitterId = newAppointment.BabySitterId, clientId = newAppointment.ClientId }, appointmentViewModel);
+            return Ok(appointmentViewModel);
         }
 
-        [HttpPut("{babysitterId}/{clientId}")]
-        public async Task<IActionResult> EditAppointment(Guid babysitterId, Guid clientId, AppointmentEditDataViewModel appointment)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditAppointment(Guid id, AppointmentEditDataViewModel appointment)
         {
-            var existingAppointment = await _appointmentRepository.AppointmentDetails(babysitterId, clientId);
+            var existingAppointment = await _appointmentRepository.AppointmentDetails(id);
             if (existingAppointment == null)
             {
                 return NotFound();
@@ -74,12 +75,12 @@ namespace BabbySitterAnytime.Controllers
 
             existingAppointment.AppointmentStatus = appointment.AppointmentStatus;
 
-            await _appointmentRepository.EditAppointment(babysitterId, clientId, existingAppointment);
+            await _appointmentRepository.EditAppointment(existingAppointment);
 
             return Ok();
         }
 
-        [HttpGet("babysitterId")]
+        [HttpGet("{babysitterId}")]
         public async Task<ActionResult<List<AppointDetailsDataViewModel>>> GetAppointmentsForBabysitter(Guid babysitterId)
         {
             List<AppointDetailsDataViewModel> viewAppointments = new();
@@ -90,6 +91,10 @@ namespace BabbySitterAnytime.Controllers
                 {
                     viewAppointments.Add(new AppointDetailsDataViewModel
                     {
+                        Id = appointment.Id,
+                        BabysitterId = appointment.BabySitterId, 
+                        ClientId = appointment.ClientId,
+                        AppointmentStatus = appointment.AppointmentStatus,
                         StartingTime = appointment.StartingTime,
                         EndingTime = appointment.EndingTime,
                         Area = appointment.Area
@@ -99,7 +104,7 @@ namespace BabbySitterAnytime.Controllers
             return viewAppointments;
         }
 
-        [HttpGet("customerId")]
+        [HttpGet("{customerId}")]
         public async Task<ActionResult<List<AppointDetailsDataViewModel>>> GetAppointmentsForCustomer(Guid customerId)
         {
             List<AppointDetailsDataViewModel> viewAppointments = new();
@@ -110,8 +115,10 @@ namespace BabbySitterAnytime.Controllers
                 {
                     viewAppointments.Add(new AppointDetailsDataViewModel
                     {
+                        Id = appointment.Id,
                         StartingTime = appointment.StartingTime,
                         EndingTime = appointment.EndingTime,
+                        AppointmentStatus = appointment.AppointmentStatus,
                         Area = appointment.Area
                     });
                 }

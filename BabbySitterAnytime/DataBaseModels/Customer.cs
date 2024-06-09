@@ -12,6 +12,9 @@ namespace BabbySitterAnytime.DataBaseModels
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
 
-        public List<Appointment> Appointments { get; set; }
+        public virtual List<Appointment> Appointments { get; set; }
+
+        public string UserId { get; set; }
+        public virtual User User { get; set; }
     }
 }

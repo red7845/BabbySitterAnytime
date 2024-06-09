@@ -1,4 +1,5 @@
 ﻿using BabbySitterAnytime.DataBaseModels;
+using BabbySitterAnytime.DataViewModels;
 using BabbySitterAnytime.DataViewModels.CustomerViewModels;
 using BabbySitterAnytime.Services.BabysitterRepo;
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +9,6 @@ namespace BabbySitterAnytime.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    [Authorize(Roles = "Customer")]
     public class RatingController : ControllerBase
     {
         private readonly IBabySitterRepository _babySitterRepository;
@@ -17,12 +17,20 @@ namespace BabbySitterAnytime.Controllers
         {
             _babySitterRepository = babySitterRepository;
         }
-
+        [Authorize(Roles = "Customer")]
         [HttpPost]
-        public async Task<ActionResult> AddRating(Rating rating)
+        public async Task<ActionResult> AddRating(RatingViewModel ratingViewModel)
         {
-           await _babySitterRepository.AddRatingForBabySitter(rating);
-           return Ok(rating);
+            await _babySitterRepository.AddRatingForBabySitter(ratingViewModel);
+            return Ok(ratingViewModel);
+        }
+
+        [Authorize(Roles = "Customer,BabySitter")]
+        [HttpGet("{babysitterId}")]
+        public async Task<ActionResult<List<RatingViewModel>>> GetRatingsForBabysitter(Guid babysitterId)
+        {
+            var ratings = await _babySitterRepository.GetRatingsForBabysitter(babysitterId);
+            return Ok(ratings);
         }
     }
 }

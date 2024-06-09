@@ -17,17 +17,18 @@ namespace BabbySitterAnytime.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.3")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("BabbySitterAnytime.DataBaseModels.Appointment", b =>
                 {
-                    b.Property<Guid>("BabySitterId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ClientId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AppointmentStatus")
@@ -37,17 +38,342 @@ namespace BabbySitterAnytime.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("BabySitterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("EndingTime")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("StartingTime")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("BabySitterId", "ClientId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("BabySitterId");
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("Appointments", (string)null);
+                    b.ToTable("Appointments");
+                });
+
+            modelBuilder.Entity("BabbySitterAnytime.DataBaseModels.Area", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Areas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("13aba1cc-d3e4-4ffe-b75c-87c50485952d"),
+                            Name = "Syntagma"
+                        },
+                        new
+                        {
+                            Id = new Guid("e3e2f46c-aaea-4bc8-822d-8e0e6ed87dc8"),
+                            Name = "Plaka"
+                        },
+                        new
+                        {
+                            Id = new Guid("44ed4d80-2c46-4850-9678-cc5dce27a59c"),
+                            Name = "Monastiraki"
+                        },
+                        new
+                        {
+                            Id = new Guid("420cc3ad-5bc9-43d1-86a4-bc8c3aae98ae"),
+                            Name = "Kolonaki"
+                        },
+                        new
+                        {
+                            Id = new Guid("69059e03-2946-4bf8-9b91-ed693867b503"),
+                            Name = "Exarchia"
+                        },
+                        new
+                        {
+                            Id = new Guid("6f989abc-13ef-4041-9fe6-41319ed44b46"),
+                            Name = "Psiri"
+                        },
+                        new
+                        {
+                            Id = new Guid("49f84dd6-d8c1-40f7-9c6f-9ef0cfb76a4a"),
+                            Name = "Gazi"
+                        },
+                        new
+                        {
+                            Id = new Guid("dbdd4886-33d5-477c-9cd7-e220d816e329"),
+                            Name = "Pangrati"
+                        },
+                        new
+                        {
+                            Id = new Guid("053fd88a-d589-4d4c-a03b-54b3828dda60"),
+                            Name = "Metaxourgeio"
+                        },
+                        new
+                        {
+                            Id = new Guid("776ebaba-de33-4e0f-9784-76a81434035b"),
+                            Name = "Koukaki"
+                        },
+                        new
+                        {
+                            Id = new Guid("34ca5ff6-c796-4199-916b-b02b6bc68a1e"),
+                            Name = "Kypseli"
+                        },
+                        new
+                        {
+                            Id = new Guid("5804b1cf-ab33-4606-beff-41aa3efee804"),
+                            Name = "Thissio"
+                        },
+                        new
+                        {
+                            Id = new Guid("bd5a57ff-7318-43a7-ae67-696e268ea9e3"),
+                            Name = "Petralona"
+                        },
+                        new
+                        {
+                            Id = new Guid("d62b3c73-37aa-4db9-865a-c692e7434c69"),
+                            Name = "Neapoli"
+                        },
+                        new
+                        {
+                            Id = new Guid("9aaaee39-b57e-498b-8590-ac9c09453eac"),
+                            Name = "Lykavittos"
+                        },
+                        new
+                        {
+                            Id = new Guid("76f2330f-17eb-4172-96cc-ef7d54f791c1"),
+                            Name = "Neos Kosmos"
+                        },
+                        new
+                        {
+                            Id = new Guid("2be28ba8-c3bf-49bd-aad8-f80c291b7eeb"),
+                            Name = "Agios Dimitrios"
+                        },
+                        new
+                        {
+                            Id = new Guid("a25b1d7f-25b1-42f5-83ff-0e70c6ba6d0d"),
+                            Name = "Piraeus"
+                        },
+                        new
+                        {
+                            Id = new Guid("2b7d442e-383b-43f9-9c77-0897ea13df7e"),
+                            Name = "Marousi"
+                        },
+                        new
+                        {
+                            Id = new Guid("735d976a-bd96-4a35-ae14-00997adef4cd"),
+                            Name = "Chalandri"
+                        },
+                        new
+                        {
+                            Id = new Guid("a2f34ab9-0526-4772-a384-36bfbc0ec024"),
+                            Name = "Glyfada"
+                        },
+                        new
+                        {
+                            Id = new Guid("12fd0629-92cf-4603-81cb-de98074746f3"),
+                            Name = "Vouliagmeni"
+                        },
+                        new
+                        {
+                            Id = new Guid("61846144-75cd-4dc3-9ce6-e793019e681e"),
+                            Name = "Ilisia"
+                        },
+                        new
+                        {
+                            Id = new Guid("39443851-ffa4-4681-bfcc-0fedc731a951"),
+                            Name = "Ano Patisia"
+                        },
+                        new
+                        {
+                            Id = new Guid("07313700-52c6-4444-9e20-97ef2f3c21fd"),
+                            Name = "Kato Patisia"
+                        },
+                        new
+                        {
+                            Id = new Guid("0ce4859e-f3f9-4e87-85e9-d3bb319a6bde"),
+                            Name = "Zografou"
+                        },
+                        new
+                        {
+                            Id = new Guid("2477400e-cc8e-4679-adde-0bba2de75fa2"),
+                            Name = "Aghia Paraskevi"
+                        },
+                        new
+                        {
+                            Id = new Guid("534a8f75-7517-4c6e-a9bd-314fbd009e75"),
+                            Name = "Galatsi"
+                        },
+                        new
+                        {
+                            Id = new Guid("61f04c9e-52dc-403a-a349-8293d9a303de"),
+                            Name = "Omonia"
+                        },
+                        new
+                        {
+                            Id = new Guid("df046b0b-175a-4ed2-a8d8-5b61fe95a66d"),
+                            Name = "Sepolia"
+                        },
+                        new
+                        {
+                            Id = new Guid("75ffd930-c4ea-4887-8fd1-84979c000619"),
+                            Name = "Ano Ilisia"
+                        },
+                        new
+                        {
+                            Id = new Guid("ce74cba2-079d-4b68-9494-a60591f96e0a"),
+                            Name = "Elliniko"
+                        },
+                        new
+                        {
+                            Id = new Guid("89a581cf-8578-4dec-a065-60a7d7783bb9"),
+                            Name = "Peristeri"
+                        },
+                        new
+                        {
+                            Id = new Guid("218a48c0-d5c3-439e-a8cb-e8b17aa38fa8"),
+                            Name = "Kallithea"
+                        },
+                        new
+                        {
+                            Id = new Guid("f89c4101-8d97-4346-a882-bd9bb4ba6299"),
+                            Name = "Moschato"
+                        },
+                        new
+                        {
+                            Id = new Guid("8d4e6e47-1407-41ea-b5f5-3d1e80de5f0e"),
+                            Name = "Tavros"
+                        },
+                        new
+                        {
+                            Id = new Guid("22841ec9-1369-414b-b078-22bb4a61e78f"),
+                            Name = "Nikaia"
+                        },
+                        new
+                        {
+                            Id = new Guid("ec92d15d-7381-4e38-964e-db24868b7c70"),
+                            Name = "Agios Ioannis Rentis"
+                        },
+                        new
+                        {
+                            Id = new Guid("06fa6fca-10a1-473d-98d2-ce5a4a53011b"),
+                            Name = "Kifisia"
+                        },
+                        new
+                        {
+                            Id = new Guid("c32489f4-155e-4985-8a59-023a94f4d7b7"),
+                            Name = "Vrilissia"
+                        },
+                        new
+                        {
+                            Id = new Guid("b0ed85d8-64b4-44c3-9501-48b07cad7e05"),
+                            Name = "Melissia"
+                        },
+                        new
+                        {
+                            Id = new Guid("826a13da-68f1-4529-858d-af6782e46d9c"),
+                            Name = "Agios Stefanos"
+                        },
+                        new
+                        {
+                            Id = new Guid("2cb68f18-6939-47a4-8b4e-7edeb678f733"),
+                            Name = "Ano Liosia"
+                        },
+                        new
+                        {
+                            Id = new Guid("9ec03a94-f394-4fbb-9227-f65ea365e0dc"),
+                            Name = "Varvakeios"
+                        },
+                        new
+                        {
+                            Id = new Guid("efbfe579-1a01-4263-9938-322c2fd7fcb9"),
+                            Name = "Ambelokipi"
+                        },
+                        new
+                        {
+                            Id = new Guid("7e815b53-07a1-4875-8769-1484ea37ac7d"),
+                            Name = "Gyzi"
+                        },
+                        new
+                        {
+                            Id = new Guid("781cd93a-4563-4df7-b0f4-639815e0249e"),
+                            Name = "Psychiko"
+                        },
+                        new
+                        {
+                            Id = new Guid("76eec9a4-5095-4634-b0ae-30aca071c103"),
+                            Name = "Filothei"
+                        },
+                        new
+                        {
+                            Id = new Guid("a66572e5-2ae0-457d-9fcb-fc28c6ce4390"),
+                            Name = "Argyroupoli"
+                        },
+                        new
+                        {
+                            Id = new Guid("92eec9ab-0f3d-4ffd-9fc8-c3ea607d085b"),
+                            Name = "Alimos"
+                        },
+                        new
+                        {
+                            Id = new Guid("a008d739-c0e0-4335-bed4-fe8160b468f6"),
+                            Name = "Palaio Faliro"
+                        },
+                        new
+                        {
+                            Id = new Guid("4527cc90-3da8-407b-84e6-cadedef87f21"),
+                            Name = "Kaisariani"
+                        },
+                        new
+                        {
+                            Id = new Guid("13264fd3-5fdd-4112-8d81-b4d990db6433"),
+                            Name = "Votanikos"
+                        },
+                        new
+                        {
+                            Id = new Guid("c73a0768-5cfa-4e74-bdf5-a069bb9f4487"),
+                            Name = "Kerameikos"
+                        },
+                        new
+                        {
+                            Id = new Guid("9ff6d0cf-6180-49e3-935a-0f57598d954b"),
+                            Name = "Rizoupoli"
+                        },
+                        new
+                        {
+                            Id = new Guid("cc35a789-9ade-4e1d-b2b9-4508caf19f61"),
+                            Name = "Aghios Eleftherios"
+                        },
+                        new
+                        {
+                            Id = new Guid("3640d2f0-5b81-4dff-8bc6-22ef59fff919"),
+                            Name = "Nea Smyrni"
+                        },
+                        new
+                        {
+                            Id = new Guid("2dbbcb57-7c1a-4dec-9546-630155f43603"),
+                            Name = "Aghios Artemios"
+                        },
+                        new
+                        {
+                            Id = new Guid("992f16c7-3058-4150-b6f2-489b756eedc4"),
+                            Name = "Ano Petralona"
+                        },
+                        new
+                        {
+                            Id = new Guid("7badb858-acd8-41de-99e3-2feced4c9bea"),
+                            Name = "Kaminia"
+                        });
                 });
 
             modelBuilder.Entity("BabbySitterAnytime.DataBaseModels.Babysitter", b =>
@@ -68,6 +394,9 @@ namespace BabbySitterAnytime.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("HourlyRate")
+                        .HasColumnType("int");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -76,9 +405,35 @@ namespace BabbySitterAnytime.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PhotoUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Babysitters", (string)null);
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Babysitters");
+                });
+
+            modelBuilder.Entity("BabbySitterAnytime.DataBaseModels.BabysitterArea", b =>
+                {
+                    b.Property<Guid>("BabysitterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AreaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("BabysitterId", "AreaId");
+
+                    b.HasIndex("AreaId");
+
+                    b.ToTable("BabysitterArea");
                 });
 
             modelBuilder.Entity("BabbySitterAnytime.DataBaseModels.CurriculumVitae", b =>
@@ -103,7 +458,7 @@ namespace BabbySitterAnytime.Migrations
                     b.HasIndex("BabySitterId")
                         .IsUnique();
 
-                    b.ToTable("CurriculumVitaes", (string)null);
+                    b.ToTable("CurriculumVitaes");
                 });
 
             modelBuilder.Entity("BabbySitterAnytime.DataBaseModels.Customer", b =>
@@ -132,9 +487,16 @@ namespace BabbySitterAnytime.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Customers", (string)null);
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("BabbySitterAnytime.DataBaseModels.Rating", b =>
@@ -146,6 +508,9 @@ namespace BabbySitterAnytime.Migrations
                     b.Property<Guid>("BabysitterId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Score")
                         .HasColumnType("int");
 
@@ -153,7 +518,7 @@ namespace BabbySitterAnytime.Migrations
 
                     b.HasIndex("BabysitterId");
 
-                    b.ToTable("Ratings", (string)null);
+                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("BabbySitterAnytime.DataBaseModels.User", b =>
@@ -376,6 +741,36 @@ namespace BabbySitterAnytime.Migrations
                     b.Navigation("Client");
                 });
 
+            modelBuilder.Entity("BabbySitterAnytime.DataBaseModels.Babysitter", b =>
+                {
+                    b.HasOne("BabbySitterAnytime.DataBaseModels.User", "User")
+                        .WithOne("Babysitter")
+                        .HasForeignKey("BabbySitterAnytime.DataBaseModels.Babysitter", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BabbySitterAnytime.DataBaseModels.BabysitterArea", b =>
+                {
+                    b.HasOne("BabbySitterAnytime.DataBaseModels.Area", "Area")
+                        .WithMany("Babysitters")
+                        .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BabbySitterAnytime.DataBaseModels.Babysitter", "Babysitter")
+                        .WithMany("SupportingAreas")
+                        .HasForeignKey("BabysitterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Area");
+
+                    b.Navigation("Babysitter");
+                });
+
             modelBuilder.Entity("BabbySitterAnytime.DataBaseModels.CurriculumVitae", b =>
                 {
                     b.HasOne("BabbySitterAnytime.DataBaseModels.Babysitter", "Babysitter")
@@ -385,6 +780,17 @@ namespace BabbySitterAnytime.Migrations
                         .IsRequired();
 
                     b.Navigation("Babysitter");
+                });
+
+            modelBuilder.Entity("BabbySitterAnytime.DataBaseModels.Customer", b =>
+                {
+                    b.HasOne("BabbySitterAnytime.DataBaseModels.User", "User")
+                        .WithOne("Customer")
+                        .HasForeignKey("BabbySitterAnytime.DataBaseModels.Customer", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BabbySitterAnytime.DataBaseModels.Rating", b =>
@@ -449,6 +855,11 @@ namespace BabbySitterAnytime.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("BabbySitterAnytime.DataBaseModels.Area", b =>
+                {
+                    b.Navigation("Babysitters");
+                });
+
             modelBuilder.Entity("BabbySitterAnytime.DataBaseModels.Babysitter", b =>
                 {
                     b.Navigation("Appointments");
@@ -457,11 +868,22 @@ namespace BabbySitterAnytime.Migrations
                         .IsRequired();
 
                     b.Navigation("Ratings");
+
+                    b.Navigation("SupportingAreas");
                 });
 
             modelBuilder.Entity("BabbySitterAnytime.DataBaseModels.Customer", b =>
                 {
                     b.Navigation("Appointments");
+                });
+
+            modelBuilder.Entity("BabbySitterAnytime.DataBaseModels.User", b =>
+                {
+                    b.Navigation("Babysitter")
+                        .IsRequired();
+
+                    b.Navigation("Customer")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

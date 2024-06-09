@@ -3,7 +3,7 @@
     public enum AppointmentStatus
     {
         Accepted, 
-        ResponsePending, 
+        Pending, 
         Deleted
     }
 }

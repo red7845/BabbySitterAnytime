@@ -10,6 +10,6 @@ namespace BabbySitterAnytime.DataBaseModels
         public string Description { get; set; }
         public Guid BabySitterId { get; set; }
 
-        public Babysitter Babysitter { get; set; }
+        public virtual Babysitter Babysitter { get; set; }
     }
 }

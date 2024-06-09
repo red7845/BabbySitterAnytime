@@ -1,12 +1,19 @@
-﻿namespace BabbySitterAnytime.DataBaseModels
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BabbySitterAnytime.DataBaseModels
 {
     public class Appointment
     {
+        public Guid Id { get; set; }
         public Guid BabySitterId { get; set; }
-        public Babysitter Babysitter { get; set; }
+
+        [ForeignKey("BabySitterId")]
+        public virtual Babysitter Babysitter { get; set; }
 
         public Guid ClientId { get; set; }
-        public Customer Client { get; set; }
+
+        [ForeignKey("ClientId")]
+        public virtual Customer Client { get; set; }
 
         public DateTime StartingTime { get; set; }
         public DateTime EndingTime { get; set; }

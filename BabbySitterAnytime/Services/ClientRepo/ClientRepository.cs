@@ -1,7 +1,9 @@
 ﻿using BabbySitterAnytime.DataBaseModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace BabbySitterAnytime.Services.ClientRepo
 {
+
     public class ClientRepository : IClientRepository
     {
         private readonly AppDbContext _appDbContenxt;
@@ -27,6 +29,11 @@ namespace BabbySitterAnytime.Services.ClientRepo
             {
                 throw new Exception(ex.Message, ex);
             }
+        }
+
+        public async Task<Customer> GetCustomerByUserId(string userId)
+        {
+            return await _appDbContenxt.Customers.Where(c => c.UserId == userId).FirstOrDefaultAsync();
         }
 
         public async Task<Customer> ProfileDetails(Guid id)

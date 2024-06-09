@@ -1,0 +1,48 @@
+.appointments-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.appointment-box {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin: 10px 0;
+    padding: 15px;
+    width: 90%; /* Adjust based on your layout */
+    max-width: 600px; /* Maximum width of the box */
+    background-color: #f9f9f9;
+}
+
+    .appointment-box div {
+        margin-bottom: 8px;
+    }
+
+.no-appointments-message {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+    font-size: 18px;
+}
+
+.loader {
+    border: 8px solid #f3f3f3; /* Lighter grey makes the spinner less noticeable, you can change it to a darker shade */
+    border-top: 8px solid #3498db; /* Make this a bright color or change it if it doesn't stand out */
+    border-radius: 50%;
+    width: 50px; /* Increase the size */
+    height: 50px; /* Increase the size */
+    animation: spin 1s linear infinite; /* Speed up the spin for better visibility */
+    margin: 40px auto; /* Center it more clearly and give it some space */
+    display: block;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

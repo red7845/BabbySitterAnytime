@@ -7,5 +7,6 @@ namespace BabbySitterAnytime.Services.ClientRepo
         Task CreateProfile(Customer client);
         Task EditProfile(Customer customer);
         Task<Customer> ProfileDetails(Guid id);
+        Task<Customer> GetCustomerByUserId(string userId);
     }
 }

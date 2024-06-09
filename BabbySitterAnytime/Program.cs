@@ -1,7 +1,10 @@
 using BabbySitterAnytime.DataBaseModels;
 using BabbySitterAnytime.Services.AppointmentRepo;
+using BabbySitterAnytime.Services.AreaRepo;
 using BabbySitterAnytime.Services.BabysitterRepo;
 using BabbySitterAnytime.Services.ClientRepo;
+using BabbySitterAnytime.Services.CVRepo;
+using BabbySitterAnytime.Services.EmailRepo;
 using BabbySitterAnytime.Services.Token;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -16,13 +19,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// Load configuration from appsettings.json
-//var configuration = new ConfigurationBuilder()
-//    .SetBasePath(Directory.GetCurrentDirectory())
-//    .AddJsonFile("appsettings.json")
-//    .Build();
+    options.UseLazyLoadingProxies()
+    .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add configuration to the services
 builder.Services.AddSingleton(builder.Configuration);
@@ -40,11 +38,21 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 })
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
-
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireCustomerOrBabysitter", policy => policy.RequireRole("Customer", "Babysitter"));
+});
 builder.Services.AddTransient<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddTransient<IBabySitterRepository, BabySitterRepository>();
 builder.Services.AddTransient<IClientRepository, ClientRepository>();
-builder.Services.AddTransient<TokenService>();
+builder.Services.AddTransient<ICVRepository, CVRepository>();
+builder.Services.AddTransient<IAreaRepository, AreaRepository>();
+builder.Services.AddTransient<IEmailService>(provider => new SmtpEmailService(
+       smtpServer: builder.Configuration["EmailSettings:SmtpServer"],
+       smtpPort: Convert.ToInt32(builder.Configuration["EmailSettings:SmtpPort"]),
+       fromEmail: builder.Configuration["EmailSettings:FromEmail"],
+       emailPassword: builder.Configuration["EmailSettings:EmailPassword"]
+   )); builder.Services.AddTransient<TokenService>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -94,20 +102,25 @@ builder.Services.AddSwaggerGen(c =>
         });
 });
 
+// Add CORS service
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("https://localhost:5173") // The URL of your React app
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-        c.RoutePrefix = string.Empty; // To serve the Swagger UI at the app's root
-    });
+    app.UseSwaggerUI();
 }
-
-//app.UseHttpsRedirection();
+app.UseCors("AllowSpecificOrigin");
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
