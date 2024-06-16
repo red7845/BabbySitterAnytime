@@ -24,10 +24,10 @@ namespace BabbySitterAnytime.Services.AppointmentRepo
             await _appDbContenxt.SaveChangesAsync();
 
             // Re-fetch the appointment with related data
-            appointment = _appDbContenxt.Appointments
+            appointment = await _appDbContenxt.Appointments
                 .Include(a => a.Babysitter)
                 .Include(a => a.Client)
-                .FirstOrDefault(a => a.Id == appointment.Id);
+                .FirstOrDefaultAsync(a => a.Id == appointment.Id);
 
             await NotifyAppointmentDetails(appointment, true);
         }

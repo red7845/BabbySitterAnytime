@@ -42,7 +42,6 @@ namespace BabbySitterAnytime.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
-            // Assuming User entity has an Id property that is populated upon creation.
             var user = new User { UserName = model.UserName, Role = model.Role };
             var result = await _userManager.CreateAsync(user, model.Password);
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './styling/HomePage.css'; // Make sure to create a corresponding CSS file
+import './styling/HomePage.css'; 
 import homePicture from './assets/close-up-kids-painting-as-team.jpg'; 
 
 const HomePage = () => {

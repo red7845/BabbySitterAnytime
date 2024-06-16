@@ -3,7 +3,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import axios from 'axios';
-import './BabysitterHomePage.css'; // Make sure the path is correct
+import './BabysitterHomePage.css';
 import { useNavigate } from 'react-router-dom';
 import { fetchBabysitterByUserId } from '../helpers/apiHelpers.js';
 
@@ -32,7 +32,6 @@ const BabysitterHomePage = () => {
         setIsLoading(true);
         try {
             const token = localStorage.getItem('authToken');
-            console.log(new Date(selectedAppointment.start).toISOString());
 
             const response = await axios.put(`https://localhost:7089/api/Appointment/EditAppointment/${selectedAppointment.id}`, {
                 startingTime: new Date(selectedAppointment.start).toISOString(),
@@ -44,7 +43,6 @@ const BabysitterHomePage = () => {
                 }
             });
 
-            console.log(response.data);
             setIsModalOpen(false);
             fetchAppointments();
         } catch (error) {

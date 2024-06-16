@@ -18,31 +18,22 @@ const Login = ({ role, setUserRole }) => {
             [e.target.name]: e.target.value,
         });
     };
-    console.log(role)
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Replace with your actual login API endpoint
             console.log('loading')
             setLoading(true)
             const response = await axios.post('https://localhost:7089/api/auth/login', credentials);
-            console.log(response.data);
             const { token, userId } = response.data;
-            localStorage.setItem('authToken', token); // save the token to localstorage
-            localStorage.setItem('userId', userId); // Save the user ID
+            localStorage.setItem('authToken', token); 
+            localStorage.setItem('userId', userId); 
 
-            //decode the token to get user Data
             const decoded = jwtDecode(token);
 
-            //the role is in a claim called 'role'
             const userRole = decoded.role;
 
             setUserRole(userRole)
-            console.log(userRole);
-            console.log(response.data);
-            console.log(decoded);
-            console.log(decoded?.unique_name||"")
-            localStorage.setItem('customerName', decoded?.unique_name || ""); // Save the user name
+            localStorage.setItem('customerName', decoded?.unique_name || ""); 
             //redirect based on the role 
             if (userRole === 'Customer') {
                 navigate('/customer-home')
@@ -62,11 +53,6 @@ const Login = ({ role, setUserRole }) => {
             console.log('loading false')
         }
     };
-    //Giannis
-    //Aaaaaaaaaa13@
-
-    //Ioannis33    //customer
-    //Idontlovereadingbooks1!
 
     return (
         <div className="vh-100">

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import addImageIconUrl from '../assets/camera-add-svgrepo-com.svg'; // Import the SVG file
 import './BabysitterHomePage.css'; // Make sure the path is correct
 import Select from 'react-select';
 
@@ -25,7 +24,6 @@ const BabySitterCreateProfile = () => {
         const fetchAreas = async () => {
             try {
                 const response = await axios.get('https://localhost:7089/api/Area/GetAllAreas');
-                console.log("API Response:", response.data); // Add this line to check the actual structure
                 setAreas(response.data);
             } catch (error) {
                 console.error('Failed to fetch areas:', error);
@@ -77,16 +75,12 @@ const BabySitterCreateProfile = () => {
 
         try {
             const url = 'https://localhost:7089/api/Babysitter/CreatePofile';
-            console.log(profileDataWithAreas)
-            console.log(token)
-            console.log(userId)
-
+       
             const response = await axios.post(url, profileDataWithAreas, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            console.log(response.data);
             navigate('/babysitter-home');
         } catch (error) {
             console.error('There was an error creating the babysitter profile:', error);

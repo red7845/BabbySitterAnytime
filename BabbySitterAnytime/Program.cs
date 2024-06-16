@@ -16,7 +16,6 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseLazyLoadingProxies()
@@ -30,7 +29,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
     // Configure password policy
-    options.Password.RequiredLength = 8;
+    options.Password.RequiredLength = 10;
     options.Password.RequireDigit = true;
     options.Password.RequireUppercase = true;
     options.Password.RequireLowercase = true;

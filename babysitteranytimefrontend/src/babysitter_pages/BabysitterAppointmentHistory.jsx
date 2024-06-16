@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './AppointmentHistory.css'; // Import your CSS for styling
+import './AppointmentHistory.css'; 
 import { fetchBabysitterByUserId } from '../helpers/apiHelpers.js';
 
 const AppointmentHistory = () => {
@@ -25,7 +25,7 @@ const AppointmentHistory = () => {
             } catch (error) {
                 console.error("Failed to fetch appointments:", error);
             } finally {
-                setIsLoading(false);  // End loading
+                setIsLoading(false);  
             }
         };
 

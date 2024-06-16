@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; // Import useEffect here
+import React, { useState, useEffect } from 'react'; 
 import axios from 'axios';
 import { fetchBabysitterByUserId } from '../helpers/apiHelpers.js';
 import { useNavigate } from 'react-router-dom';
@@ -54,11 +54,8 @@ const EditBabysitterProfile = () => {
         event.preventDefault();
         const token = localStorage.getItem('authToken');
         const url = `https://localhost:7089/api/Babysitter/EditProfile/${babysitterId}`;
-        console.log(token)
-        console.log(babysitterId)
 
         try {
-            console.log('this is the photo' + photoUrl)
             const response = await axios.put(url, {
                 firstName,
                 lastName,
@@ -73,7 +70,6 @@ const EditBabysitterProfile = () => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            console.log(response.data);
             navigate('/babysitter-home');
             // Handle the response, e.g., show a success message or redirect
         } catch (error) {

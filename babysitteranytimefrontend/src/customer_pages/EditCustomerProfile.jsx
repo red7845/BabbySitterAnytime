@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'; // Import useEffect here
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import { fetchCustomerByUserId } from '../helpers/apiHelpers.js';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,10 +15,7 @@ const EditCustomerProfile = () => {
     const [error, setError] = useState("")
 
     useEffect(() => {
-        // Assuming userId is stored in local storage, but adjust as needed
-        // Define an async function inside the useEffect hook
         const fetchCustomerData = async () => {
-            // Ensure userId is available before making the call
             if (userId) {
                 const customerData = await fetchCustomerByUserId(userId);
                 setCustomerId(customerData.id);
@@ -31,15 +27,13 @@ const EditCustomerProfile = () => {
             }
         };
 
-        // Call the async function
         fetchCustomerData();
-    }, []); // Empty dependency array means this effect runs once on mount
+    }, []); 
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const token = localStorage.getItem('authToken');
         const url = `https://localhost:7089/api/Client/EditProfile/${customerId}`;
-        console.log(token)
         try {
             setLoading(true)
             const response = await axios.put(url, {
@@ -54,17 +48,13 @@ const EditCustomerProfile = () => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            console.log(response.data);
             navigate('/customer-home');
-            // Handle the response, e.g., show a success message or redirect
             setError('')
         } catch (error) {
             setError('error')
             console.error('Error updating the profile:', error);
-            // Handle the error, e.g., show an error message
         } finally {
             setLoading(false)
-            console.log('loading false')
         }
     };
 

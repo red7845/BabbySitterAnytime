@@ -25,11 +25,10 @@ namespace BabbySitterAnytime.Services.Token
                 {
             new Claim(ClaimTypes.Name, user.UserName),
             new Claim(ClaimTypes.Role, user.Role.ToString())
-                    // Add other claims as needed
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
-                Issuer = _configuration["Jwt:Issuer"], // Add Issuer
-                Audience = _configuration["Jwt:Audience"], // Add Audience
+                Issuer = _configuration["Jwt:Issuer"], 
+                Audience = _configuration["Jwt:Audience"], 
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

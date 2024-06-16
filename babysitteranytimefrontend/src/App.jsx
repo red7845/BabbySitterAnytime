@@ -20,15 +20,11 @@ const App = () => {
     const [userRole, setUserRole] = useState('');
 
     useEffect(() => {
-        console.log('use effect')
         try {
             const token = localStorage.getItem('authToken');
             if (token) {
-                console.log('from layout token:', token); // Properly log the token
                 const decodedToken = jwtDecode(token);
-                console.log('from layout decodedToken:', decodedToken); // Properly log the decoded token
                 setUserRole(decodedToken.role);
-                console.log(decodedToken.role)
             } else {
                 console.log('No token available');
             }

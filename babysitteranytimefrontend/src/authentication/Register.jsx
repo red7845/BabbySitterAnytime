@@ -34,8 +34,6 @@ const Register = ({ setUserRole }) => {
         });
     };
 
-    console.log(formData);
-
     const isValidPassword = (password) => {
         // Check for minimum length of 10 characters
         const specialCharacterRegex = /[ `!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
@@ -67,19 +65,14 @@ const Register = ({ setUserRole }) => {
             setLoading(true)
             const response = await axios.post('https://localhost:7089/api/auth/register', formData);
             const { token, userId } = response.data;
-            console.log(response.data);
-            console.log(token);
-            console.log(userId);
-
+ 
             localStorage.setItem('authToken', token); // save the token to localstorage
             localStorage.setItem('userId', userId); // Save the user ID
 
             //decode the token to get user Data
             const decoded = jwtDecode(token);
-            console.log(decoded);
             //the role is in a claim called 'role'
             const userRole = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-            console.log(userRole);
             setUserRole(userRole)
             //redirect based on the role 
             if (userRole === 'Customer') {

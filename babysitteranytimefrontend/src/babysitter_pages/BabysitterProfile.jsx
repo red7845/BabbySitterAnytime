@@ -242,7 +242,7 @@ const BabysitterProfile = () => {
                             src={babysitter.photoUrl}
                             alt="Babysitter"
                             className="img-fluid img-thumbnail"
-                            style={{ maxWidth: '200px', maxHeight: '200px' }} // Adjusted size
+                            style={{ maxWidth: '200px', maxHeight: '200px' }} 
                         />
                     ) : (
                         <p>No image available</p>

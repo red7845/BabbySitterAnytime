@@ -19,10 +19,8 @@ const Layout = ({ children, userType }) => {
             localStorage.removeItem('userId');
             navigate('/');
         };
-        console.log(userType)
         const handleProfileClick = async () => {
         const userId = localStorage.getItem('userId');
-          // You are missing the fetchBabysitterByUserId function (line 25) - it is not defined anywhere
         const babysitterData = await fetchBabysitterByUserId(userId);
         if (babysitterData && babysitterData.id) {
             navigate(`/babysitter-profile/${babysitterData.id}`);

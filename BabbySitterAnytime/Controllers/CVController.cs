@@ -19,7 +19,6 @@ namespace BabbySitterAnytime.Controllers
             _cvRepository = cvRepository;
         }
 
-        // GET: api/CurriculumVitaes/{babySitterId}
         [Authorize(Roles = "Customer,BabySitter")]
         [HttpGet("{babySitterId}")]
         public async Task<ActionResult<CVDataViewModel>> GetCurriculumVitae(Guid babySitterId)
@@ -39,17 +38,16 @@ namespace BabbySitterAnytime.Controllers
             return cvModel;
         }
 
-        // POST: api/CurriculumVitaes
         [Authorize(Roles = "BabySitter")]
         [HttpPost]
         public async Task<ActionResult<CVDataViewModel>> PostCurriculumVitae(CVDataViewModel cvModel)
         {
             var newCv = new CurriculumVitae
             {
-                Id = Guid.NewGuid(), // Assuming IDs are generated on the server side.
+                Id = Guid.NewGuid(), 
                 Title = cvModel.Title,
                 Description = cvModel.Description,
-                BabySitterId = cvModel.BabysitterId // You would need to set this based on your logic.
+                BabySitterId = cvModel.BabysitterId
             };
 
             await _cvRepository.CreateCV(newCv);
@@ -57,7 +55,6 @@ namespace BabbySitterAnytime.Controllers
             return CreatedAtAction(nameof(GetCurriculumVitae), new { babySitterId = newCv.BabySitterId }, cvModel);
         }
 
-        // PUT: api/CurriculumVitaes/{id}
         [Authorize(Roles = "BabySitter")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCurriculumVitae(Guid id, CVDataViewModel cvModel)
@@ -76,6 +73,5 @@ namespace BabbySitterAnytime.Controllers
             return NoContent();
         }
 
-        // Additional methods for Delete and Details can be implemented following similar patterns.
     }
 }

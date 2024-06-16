@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './DropdownMenu.css'; // your custom CSS for styling
+import './DropdownMenu.css'; 
 
 const DropdownMenu = ({ options }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -10,10 +10,8 @@ const DropdownMenu = ({ options }) => {
 
     const handleOptionClick = (action) => {
         action();
-        setIsOpen(false); // Close the menu
+        setIsOpen(false); 
     };
-
-    console.log('Options:', options);
 
     return (
         <div className="dropdown-menu-container">

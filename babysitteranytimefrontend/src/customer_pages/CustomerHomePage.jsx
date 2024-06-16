@@ -1,12 +1,11 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './CustomerHomePage.css'; // Import the CSS file you'll create for styling
+import './CustomerHomePage.css'; 
 import Select from 'react-select';
 
 const CustomerHomePage = () => {
     const navigate = useNavigate();
-    // State to store babysitters data
     const [babysitters, setBabysitters] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedBabysitterId, setSelectedBabysitterId] = useState(null);
@@ -45,8 +44,6 @@ const CustomerHomePage = () => {
     const openModal = (babysitterId) => {
         setSelectedBabysitterId(babysitterId);
         setIsModalOpen(true);
-        console.log('mpaino edo!!');
-        console.log(isModalOpen);
     };
 
     const openRatingModal = (babysitterId) => {
@@ -60,7 +57,6 @@ const CustomerHomePage = () => {
     };
 
     const customerName = localStorage.getItem('customerName')
-    console.log(customerName)
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -72,7 +68,7 @@ const CustomerHomePage = () => {
             const cvResponse = await axios.get(`https://localhost:7089/api/CurriculumVitaes/GetCurriculumVitae/${babysitterId}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
-            setCurrentCv(cvResponse.data); // Assuming the API returns CV data directly
+            setCurrentCv(cvResponse.data); 
             setIsCvModalOpen(true);
         } catch (error) {
             console.error("Failed to fetch CV:", error);
@@ -86,16 +82,15 @@ const CustomerHomePage = () => {
     const bookAppointment = async () => {
         try {
             const token = localStorage.getItem('authToken');
-            const userId = localStorage.getItem('userId'); // Assuming this is how you get the logged-in client's ID
+            const userId = localStorage.getItem('userId'); 
 
             const customer = await axios.get(`https://localhost:7089/api/Client/GetCustomerByUserId/${userId}`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`, // Assuming Bearer token, adjust if needed
+                    'Authorization': `Bearer ${token}`, 
                 }
             });
 
-            console.log(customer);
             const customerId = customer.data.id
 
             const startingTime = new Date(appointmentDetails.startDate + 'T' + appointmentDetails.startTime).toISOString();
@@ -106,7 +101,7 @@ const CustomerHomePage = () => {
                 clientId: customerId,
                 startingTime: startingTime,
                 endingTime: endingTime,
-                area: "The area you want to specify",  // You need to handle how to get/set the area value
+                area: "The area you want to specify", 
                 status: 1
             };
 
@@ -116,15 +111,10 @@ const CustomerHomePage = () => {
                 },
             });
 
-            // Check response here if needed
-
-            // Close the modal after booking
             closeModal();
 
-            // Maybe do something to confirm the appointment to the user
         } catch (error) {
             console.error('Failed to book appointment:', error);
-            // Handle error (e.g., show an error message)
         }
     };
 
@@ -151,7 +141,7 @@ const CustomerHomePage = () => {
             const token = localStorage.getItem('authToken');
             await axios.post('https://localhost:7089/api/Rating/AddRating', {
                 score: ratingScore,
-                comment: ratingComment, // Add the comment here
+                comment: ratingComment, 
                 babysitterId: selectedBabysitterId
             }, {
                 headers: {
@@ -159,10 +149,8 @@ const CustomerHomePage = () => {
                 },
             });
             setIsRatingModalOpen(false); // Close the modal after submission
-            // Handle success (e.g., show a success message)
         } catch (error) {
             console.error('Failed to submit rating:', error);
-            // Handle error (e.g., show an error message)
         }
     };
 
@@ -210,15 +198,7 @@ const CustomerHomePage = () => {
             }
         }
     };
-    //Giannis
-    //Aaaaaaaaaa13@
-
-
-    //baby sitter acc
-    //Redina40
-    //Idontlovereadingbooks1!
-
-
+  
     return (
         <div>
 

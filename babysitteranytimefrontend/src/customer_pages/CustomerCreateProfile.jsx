@@ -38,12 +38,9 @@ const CustomerCreateProfile = () => {
                     Authorization: `Bearer ${token}`
                 }
             });
-            console.log(response.data);
             navigate('/customer-home'); // Navigate to the customer home page
-            // Handle the response, e.g., display a success message, navigate to another page, etc.
         } catch (error) {
             console.error('There was an error creating the profile:', error);
-            // Handle the error, e.g., display an error message
         }
     };
 
