@@ -2,12 +2,13 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'; 
 import axios from 'axios';
 import DropdownMenu from './menu/DropdownMenu';
+import { fetchBabysitterByUserId } from './helpers/apiHelpers.js';
 
 
 const Layout = ({ children, userType }) => {
     const navigate = useNavigate();
     const location = useLocation();
-    const excludedPaths = ['/', '/register', '/login'];
+    const excludedPaths = ['/', '/register', '/login',  '/babysitter-create-profile',  '/customer-create-profile'];
 
     const logout = async () => {
         const token = localStorage.getItem('authToken');
@@ -16,9 +17,9 @@ const Layout = ({ children, userType }) => {
             });
             localStorage.removeItem('authToken');
             localStorage.removeItem('userId');
-            navigate('/login');
+            navigate('/');
         };
-
+        console.log(userType)
         const handleProfileClick = async () => {
         const userId = localStorage.getItem('userId');
           // You are missing the fetchBabysitterByUserId function (line 25) - it is not defined anywhere
@@ -27,7 +28,7 @@ const Layout = ({ children, userType }) => {
             navigate(`/babysitter-profile/${babysitterData.id}`);
         }
     };
-
+    
     const showMenu = !excludedPaths.includes(location.pathname);
     const menuOptions = userType === 'Customer' ? [
         { label: 'Edit Profile', action: () => navigate('/customer-edit-profile') },

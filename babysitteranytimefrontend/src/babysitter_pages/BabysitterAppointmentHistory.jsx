@@ -76,8 +76,7 @@ const AppointmentHistory = () => {
                     <table className="table table-striped table-hover border w-75 mx-auto overflow-auto table-responsive">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Area</th>
+                                    <th scope="col"></th>
                                     <th scope="col">Start Time</th>
                                     <th scope="col">End Time</th>
                                     <th scope="col">Status</th>
@@ -88,7 +87,6 @@ const AppointmentHistory = () => {
                                 {appointments.map((appointment, i) => (
                                     <tr key={appointment.id}>
                                         <th scope="row">{i + 1}</th>
-                                        <td> {appointment.area}</td>
                                         <td> {new Date(appointment.startingTime).toLocaleString()}</td>
                                         <td> {new Date(appointment.endingTime).toLocaleString()}</td>
                                         <td> {appointment.appointmentStatus === 0 ? <span class="badge bg-warning rounded-pill">Pending</span> : <span class="badge bg-success rounded-pill">Completed</span>}</td>

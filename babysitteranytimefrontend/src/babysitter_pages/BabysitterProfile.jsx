@@ -195,46 +195,83 @@ const BabysitterProfile = () => {
         );
     };
 
-    // Render functions for modals and other UI elements remain the same as you provided them.
+    const openRatingsModal = async (babysitterId) => {
+        try {
+            const token = localStorage.getItem('authToken');
+            const response = await axios.get(`https://localhost:7089/api/Rating/GetRatingsForBabysitter/${babysitterId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            setRatings(response.data);
+            setIsRatingsModalOpen(true);
+        } catch (error) {
+            console.error("Failed to fetch ratings:", error);
+        }
+    };
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return (
+
+            <div className="vh-100">
+                <nav className="navbar sticky-top bg-pink tex-center d-flex justify-content-center" >
+                    <div className="text-white p-1 fs-5 fst-italic">Welcome to Babysitter Anytime</div>
+                </nav>
+                <div className="d-flex justify-content-center mt-5 h-100">
+                    <div className="spinner" role="status"> </div>
+                </div>
+                <footer className="sticky-bottom bg-pink text-light p-2 text-center">&#169; Copyright 2024 Redina. All rights reserved</footer>
+            </div>
+        )
     }
 
     if (!babysitter) {
         return <div>Unable to load babysitter profile. Please try again.</div>;
     }
 
-    // Rest of the component rendering remains as you had it before.
     return (
-        <div>
+        <div className="d-flex flex-column vh-100">
+            <nav className="navbar sticky-top bg-pink tex-center d-flex justify-content-center" >
+                <div className="text-white p-1 fs-5 fst-italic">Welcome to Babysitter Anytime</div>
+            </nav>
             <h1>Babysitter Profile</h1>
-            {babysitter.photoUrl ? (
-                <img src={babysitter.photoUrl} alt="Babysitter" style={{ width: '200px', height: 'auto' }} />
-            ) : (
-                <p>No image available</p>
-            )}
-            <p><strong>First Name:</strong> {babysitter.firstName}</p>
-            <p><strong>Last Name:</strong> {babysitter.lastName}</p>
-            <p><strong>Phone Number:</strong> {babysitter.phoneNumber}</p>
-            <p><strong>Email:</strong> {babysitter.email}</p>
-            <p><strong>Address:</strong> {babysitter.address}</p>
-            <p><strong>Hourly Rate:</strong> {babysitter.hourlyRate}</p>
-            {babysitter.curriculumVitae ? (
-                <div>
-                    <h2>Curriculum Vitae</h2>
-                    <p><strong>Title:</strong> {babysitter.curriculumVitae.title}</p>
-                    <p><strong>Description:</strong> {babysitter.curriculumVitae.description}</p>
-                    <button onClick={() => handleEditCvClick()}>Edit CV</button>
+            <div className="row">
+                <div className="col-md-6">
+                    {babysitter.photoUrl ? (
+                        <img
+                            src={babysitter.photoUrl}
+                            alt="Babysitter"
+                            className="img-fluid img-thumbnail"
+                            style={{ maxWidth: '200px', maxHeight: '200px' }} // Adjusted size
+                        />
+                    ) : (
+                        <p>No image available</p>
+                    )}
+                    <p><strong>First Name:</strong> {babysitter.firstName}</p>
+                    <p><strong>Last Name:</strong> {babysitter.lastName}</p>
+                    <p><strong>Phone Number:</strong> {babysitter.phoneNumber}</p>
+                    <p><strong>Email:</strong> {babysitter.email}</p>
+                    <p><strong>Address:</strong> {babysitter.address}</p>
+                    <p><strong>Hourly Rate:</strong> {babysitter.hourlyRate}</p>
                 </div>
-            ) : (
-                <div>
-                    <h2>Curriculum Vitae</h2>
-                    <button onClick={handleAddCvClick}>Add CV</button>
+                <div className="col-md-6">
+                    {babysitter.curriculumVitae ? (
+                        <div>
+                            <h2>Curriculum Vitae</h2>
+                            <p><strong>Title:</strong> {babysitter.curriculumVitae.title}</p>
+                            <p><strong>Description:</strong> {babysitter.curriculumVitae.description}</p>
+                            <button className="btn btn-primary" onClick={handleEditCvClick}>Edit CV</button>
+                        </div>
+                    ) : (
+                        <div>
+                            <h2>Curriculum Vitae</h2>
+                            <button className="btn btn-primary" onClick={handleAddCvClick}>Add CV</button>
+                        </div>
+                    )}
+                    <p><strong>Score:</strong> {babysitter.score}</p>
+                    <button className="btn btn-secondary" onClick={() => openRatingsModal(babysitter.id)}>Show Comments</button>
                 </div>
-            )}
-            <p><strong>Score:</strong> {babysitter.score}</p>
-            <button onClick={() => openRatingsModal(babysitter.id)}>Show Comments</button>
+            </div>
             <RatingsModal
                 isOpen={isRatingsModalOpen}
                 onClose={() => setIsRatingsModalOpen(false)}
@@ -247,6 +284,9 @@ const BabysitterProfile = () => {
                 cv={editingCv}
                 onSubmit={handleEditCvSubmit}
             />
+            <footer className="mt-auto bg-pink text-light p-2 text-center">
+                &#169; Copyright 2024 Redina. All rights reserved
+            </footer>
         </div>
     );
 };

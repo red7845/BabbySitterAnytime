@@ -8,14 +8,20 @@ const DropdownMenu = ({ options }) => {
         setIsOpen(!isOpen);
     };
 
+    const handleOptionClick = (action) => {
+        action();
+        setIsOpen(false); // Close the menu
+    };
+
     console.log('Options:', options);
+
     return (
         <div className="dropdown-menu-container">
             <button onClick={toggleMenu} className="dropdown-toggle">Menu</button>
             {isOpen && (
                 <ul className={`dropdown-menu ${isOpen ? 'open' : ''}`}>
                     {options.map(option => (
-                        <li key={option.label} onClick={option.action}>{option.label}</li>
+                        <li key={option.label} onClick={() => handleOptionClick(option.action)}>{option.label}</li>
                     ))}
                 </ul>
             )}

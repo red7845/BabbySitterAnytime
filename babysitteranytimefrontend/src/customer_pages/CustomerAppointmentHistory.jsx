@@ -76,48 +76,38 @@ const AppointmentHistory = () => {
             <nav className="navbar sticky-top bg-pink tex-center d-flex justify-content-center" >
                 <div className="text-white p-1 fs-5 fst-italic">Welcome to Babysitter Anytime</div>
             </nav>
-            <div className="h-100 container-fluid">
-            {loading ? (
-                <div className="loader"></div>
-            ) : (
-                appointments.length > 0 ? (
-                    appointments.map(appointment => (
-                        <div key={appointment.id} className="appointment-box">
-                            <div><strong>Area:</strong> {appointment.area}</div>
-                            <div><strong>Start Time:</strong> {new Date(appointment.startingTime).toLocaleString()}</div>
-                            <div><strong>End Time:</strong> {new Date(appointment.endingTime).toLocaleString()}</div>
-                            <div><strong>Status:</strong>
-                                {appointment.appointmentStatus === 0 ? 'Accepted' :
-                                    appointment.appointmentStatus === 1 ? 'Pending' :
-                                        appointment.appointmentStatus === 2 ? 'Cancelled' : 'Unknown'}
-                            </div>
-                            {appointment.appointmentStatus === 0 && (
-                                <button onClick={() => handleCancelConfirmation(appointment.id)}>Cancel Appointment</button>
-                            )}
-                        </div>
-                    ))
-                        ) : (
-                     <div className="text-center mt-3">
-                        <div className="alert alert-info text-center margin-auto">There are no appointments available</div>
-                    </div>
-                )
-            )}
-            {isCancelConfirmationOpen && (
-                <div className="modal" style={{ display: 'block' }}>
-                    <div className="modal-content">
-                        <h2>Cancel Appointment</h2>
-                        <p>Are you sure you want to cancel this appointment?</p>
-                        <div>
-                            <button onClick={handleCancelAppointment}>Yes</button>
-                            <button onClick={handleCloseCancelConfirmation}>No</button>
-                        </div>
-                    </div>
+            <div className="position-relative h-100">
+                <div className="overflow-auto h-100">
+                    <h4 className="fst-italic text-muted mt-4 mb-3 text-center">Appointments history</h4>
+                    <table className="table table-striped table-hover border w-75 mx-auto overflow-auto table-responsive">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Start Time</th>
+                                <th scope="col">End Time</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {appointments.map((appointment, i) => (
+                                <tr key={appointment.id}>
+                                    <th scope="row">{i + 1}</th>
+                                    <td> {new Date(appointment.startingTime).toLocaleString()}</td>
+                                    <td> {new Date(appointment.endingTime).toLocaleString()}</td>
+                                    <td> {appointment.appointmentStatus === 0 ? <span class="badge bg-warning rounded-pill">Pending</span> : <span class="badge bg-success rounded-pill">Completed</span>}</td>
+                                </tr>
+                            ))}
+
+
+                        </tbody>
+                    </table>
+
                 </div>
-                )}
             </div>
-                <footer className="sticky-bottom bg-pink text-light p-2 text-center">&#169; Copyright 2024 Redina. All rights reserved</footer>
-        
+            <footer className="sticky-bottom bg-pink text-light p-2 text-center">&#169; Copyright 2024 Redina. All rights reserved</footer>
         </div>
+
     );
 };
 

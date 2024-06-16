@@ -20,6 +20,7 @@ const App = () => {
     const [userRole, setUserRole] = useState('');
 
     useEffect(() => {
+        console.log('use effect')
         try {
             const token = localStorage.getItem('authToken');
             if (token) {
@@ -27,6 +28,7 @@ const App = () => {
                 const decodedToken = jwtDecode(token);
                 console.log('from layout decodedToken:', decodedToken); // Properly log the decoded token
                 setUserRole(decodedToken.role);
+                console.log(decodedToken.role)
             } else {
                 console.log('No token available');
             }
@@ -37,12 +39,11 @@ const App = () => {
 
     return (
         <Router>
-          
             <Layout userType={userRole}>
                 <Routes>
                     <Route path="/" element={<HomePage />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
+                    <Route path="/login" element={<Login role={userRole} setUserRole={setUserRole } />} />
+                    <Route path="/register" element={<Register setUserRole={setUserRole} />} />
                     <Route path="/customer-home" element={<CustomerHomePage />} />
                     <Route path="/babysitter-home" element={<BabysitterHomePage />} />
                     <Route path="/babysitter-profile/:babysitterId" element={<BabysitterProfile />} />

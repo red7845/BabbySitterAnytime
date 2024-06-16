@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 
-const Login = () => {
+const Login = ({ role, setUserRole }) => {
     const [credentials, setCredentials] = useState({
         username: '',
         password: '',
@@ -18,7 +18,7 @@ const Login = () => {
             [e.target.name]: e.target.value,
         });
     };
-
+    console.log(role)
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -36,6 +36,8 @@ const Login = () => {
 
             //the role is in a claim called 'role'
             const userRole = decoded.role;
+
+            setUserRole(userRole)
             console.log(userRole);
             console.log(response.data);
             console.log(decoded);
@@ -62,6 +64,9 @@ const Login = () => {
     };
     //Giannis
     //Aaaaaaaaaa13@
+
+    //Ioannis33    //customer
+    //Idontlovereadingbooks1!
 
     return (
         <div className="vh-100">

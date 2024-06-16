@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 import { co } from '../../../node_modules/@fullcalendar/core/internal-common';
 
 
-const Register = () => {
+const Register = ({ setUserRole }) => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: '',
@@ -80,6 +80,7 @@ const Register = () => {
             //the role is in a claim called 'role'
             const userRole = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
             console.log(userRole);
+            setUserRole(userRole)
             //redirect based on the role 
             if (userRole === 'Customer') {
                 navigate('/customer-create-profile')
