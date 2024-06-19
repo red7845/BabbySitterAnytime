@@ -45,8 +45,8 @@ namespace BabbySitterAnytime.Controllers
             {
                 ClientId = appointment.ClientId, 
                 BabySitterId = appointment.BabysitterId, 
-                StartingTime = appointment.StartingTime,
-                EndingTime = appointment.EndingTime,
+                StartingTime = appointment.StartingTime.ToLocalTime(),
+                EndingTime = appointment.EndingTime.ToLocalTime(),
                 Area = appointment.Area, 
                 AppointmentStatus = appointment.Status
             };

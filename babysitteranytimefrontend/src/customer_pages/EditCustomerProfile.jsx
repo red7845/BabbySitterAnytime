@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchCustomerByUserId } from '../helpers/apiHelpers.js';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const EditCustomerProfile = () => {
     const navigate = useNavigate();

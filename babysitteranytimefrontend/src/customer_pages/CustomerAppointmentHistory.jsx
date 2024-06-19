@@ -3,6 +3,7 @@ import axios from 'axios';
 import './AppointmentHistory.css'; // Import your CSS for styling
 import { fetchCustomerByUserId } from '../helpers/apiHelpers.js';
 import './CustomerHomePage.css'; // Import the CSS file you'll create for styling
+import { DateTime } from 'luxon';
 
 const AppointmentHistory = () => {
     const [appointments, setAppointments] = useState([]);
@@ -10,7 +11,7 @@ const AppointmentHistory = () => {
     const [cancelingAppointmentId, setCancelingAppointmentId] = useState(null);
     const [isCancelConfirmationOpen, setIsCancelConfirmationOpen] = useState(false);
     const [loading, setLoading] = useState(false);
-
+    const timeZone = 'Europe/Athens'; // Set the desired timezone
     useEffect(() => {
         const fetchAppointments = async () => {
             setLoading(true); // Start loading
@@ -31,9 +32,15 @@ const AppointmentHistory = () => {
                 setLoading(false); // End loading
             }
         };
-
+        console.log(appointments)
         fetchAppointments();
     }, []);
+
+
+    const formatDateToLocalString = (dateString) => {
+        const zonedDate = DateTime.fromISO(dateString, { zone: timeZone });
+        return zonedDate.toFormat('yyyy-MM-dd HH:mm');
+    };
 
     const handleCancelConfirmation = async (appointmentId) => {
         setIsCancelConfirmationOpen(true);
@@ -93,9 +100,10 @@ const AppointmentHistory = () => {
                             {appointments.map((appointment, i) => (
                                 <tr key={appointment.id}>
                                     <th scope="row">{i + 1}</th>
-                                    <td> {new Date(appointment.startingTime).toLocaleString()}</td>
-                                    <td> {new Date(appointment.endingTime).toLocaleString()}</td>
-                                    <td> {appointment.appointmentStatus === 0 ? <span class="badge bg-warning rounded-pill">Pending</span> : <span class="badge bg-success rounded-pill">Completed</span>}</td>
+                                    <td> {formatDateToLocalString(appointment.startingTime)}</td>
+                                    <td> {formatDateToLocalString(appointment.endingTime)}</td>
+                                    <td> {appointment.appointmentStatus === 1 ? <span className="badge bg-warning rounded-pill">Pending</span> :
+                                        <span className="badge bg-success rounded-pill">Accepted</span>}</td>
                                 </tr>
                             ))}
 

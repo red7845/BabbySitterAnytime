@@ -89,7 +89,7 @@ const AppointmentHistory = () => {
                                         <th scope="row">{i + 1}</th>
                                         <td> {new Date(appointment.startingTime).toLocaleString()}</td>
                                         <td> {new Date(appointment.endingTime).toLocaleString()}</td>
-                                        <td> {appointment.appointmentStatus === 0 ? <span class="badge bg-warning rounded-pill">Pending</span> : <span class="badge bg-success rounded-pill">Completed</span>}</td>
+                                        <td> {appointment.appointmentStatus === 1 ? <span class="badge bg-warning rounded-pill">Pending</span> : <span class="badge bg-success rounded-pill">Accepted</span>}</td>
                                     </tr>
                                 ))}
 

@@ -76,9 +76,8 @@ Hello,
 
 An appointment has been {(isNewAppointment ? "created" : "updated")} with the following details:
 
-- Starting Time: {appointment.StartingTime}
-- Ending Time: {appointment.EndingTime}
-- Area: {appointment.Area}
+- Starting Time: {appointment.StartingTime.ToLocalTime()}
+- Ending Time: {appointment.EndingTime.ToLocalTime()}
 - Status: {appointment.AppointmentStatus}
 
 Thank you.
